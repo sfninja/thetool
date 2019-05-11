@@ -1,0 +1,9 @@
+# repeats from .gitignore
+/node_modules/
+.DS_Store
+*.swp
+*.pyc
+.vscode
+
+# other
+README.md

@@ -1,0 +1,32 @@
+{
+  "name": "thetool",
+  "version": "0.1.0",
+  "description": "CLI tool that exposes various tools from Node.js using inspector",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "bin": {
+    "thetool": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ak239/thetool.git"
+  },
+  "keywords": [],
+  "author": "ak239spb@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ak239/thetool/issues"
+  },
+  "homepage": "https://github.com/ak239/thetool#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "chrome-remote-interface": "^0.27.1",
+    "commander": "^2.20.0",
+    "update-notifier": "^3.0.0"
+  }
+}
