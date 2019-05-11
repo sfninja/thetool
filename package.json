@@ -1,6 +1,6 @@
 {
   "name": "thetool",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI tool that exposes various tools from Node.js using inspector",
   "main": "index.js",
   "engines": {
