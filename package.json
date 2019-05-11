@@ -1,10 +1,10 @@
 {
   "name": "thetool",
   "version": "0.2.0",
-  "description": "CLI tool that exposes various tools from Node.js using inspector",
+  "description": "thetool is a CLI tool to capture different cpu, memory and other profiles for your node app in Chrome DevTools friendly format",
   "main": "index.js",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "bin": {
     "thetool": "./index.js"
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/ak239/thetool.git"
   },
-  "keywords": [],
+  "keywords": ["profiler", "cpu", "memory", "coverage"],
   "author": "ak239spb@gmail.com",
   "license": "Apache-2.0",
   "bugs": {
