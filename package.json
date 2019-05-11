@@ -24,9 +24,7 @@
   },
   "homepage": "https://github.com/ak239/thetool#readme",
   "dependencies": {
-    "chalk": "^2.4.2",
-    "chrome-remote-interface": "^0.27.1",
-    "commander": "^2.20.0",
-    "update-notifier": "^3.0.0"
+    "update-notifier": "^3.0.0",
+    "ws": "^7.0.0"
   }
 }

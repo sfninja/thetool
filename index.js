@@ -12,49 +12,65 @@ const package = require('./package.json');
 
 require('update-notifier')({pkg: package}).notify({isGlobal: true});
 
-function checkOutputFolder(program) {
-  const output = program.output;
-  if (!output) {
-    console.log('Error: please specify output folder');
-    program.outputHelp();
-    process.exit(-1);
-  }
-  if (!fs.existsSync(output)) {
-    console.log('Error: output folder does not exist');
-    program.outputHelp();
-    process.exit(-1);
-  }
-  const stats = fs.statSync(output);
-  if (!stats.isDirectory()) {
-    console.log('Error: passed output folder is not a folder');
-    program.outputHelp();
-    process.exit(-1);
-  }
+function checkOutputFolder(outputFolder) {
+  if (!outputFolder)
+    outputHelp('Error: please specify output folder');
+  if (!fs.existsSync(outputFolder))
+    outputHelp('Error: output folder does not exist');
+  const stats = fs.statSync(outputFolder);
+  if (!stats.isDirectory())
+    outputHelp('Error: passed output folder is not a folder');
+}
+
+function outputHelp(error) {
+  if (error)
+    console.log(error);
+  console.log('Usage: thetool [options] <command to start node process, e.g. node index.js or npm run test>');
+  console.log('');
+  console.log('Options:');
+  console.log('  -t, --tool [type]               tool type: cpu, memoryallocation, memorysampling, coverage or type');
+  console.log('  -o, --output [existing folder]  folder for captured data');
+  console.log('  -V, --version                   output the version number');
+  console.log('  -h, --help                      output usage information');
+  process.exit(error ? -1 : 0);
+}
+
+function outputVersion() {
+  console.log(package.version);
+  process.exit(0);
 }
 
 (async function main() {
-  const program = require('commander');
-  program
-    .version(package.version)
-    .usage('[options] <command to start node process, e.g. node index.js or npm run test>')
-    .option('-t, --tool [type]', 'tool type: cpu, memoryallocation, memorysampling, coverage or type')
-    .option('-o, --output [existing folder]', 'folder for captured data')
-    .parse(process.argv);
-  if (program.args.length < 1) {
-    console.log('Error: please specify how to start node process');
-    program.outputHelp();
-    process.exit(-1);
+  let toolName = '';
+  let outputFolder = '';
+  let nodeCommandLine = [];
+  const argv = process.argv;
+  for (let i = 2; i < argv.length; ++i) {
+    const arg = argv[i];
+    if (arg === '-V' || arg === '--version')
+      outputVersion();
+    if (arg === '--help')
+      outputHelp();
+    if (arg === '-t' || arg === '--tool') {
+      toolName = argv[i + 1] || '';
+      ++i;
+    } else if (arg === '-o' || arg === '--output') {
+      outputFolder = argv[i + 1] || '';
+      ++i;
+    } else {
+      nodeCommandLine = argv.slice(i);
+      break;
+    }
   }
+  if (nodeCommandLine.length < 1)
+    outputHelp('Error: please specify how to start node process');
   const supportedProfiles = new Set(['cpu', 'memorysampling', 'memoryallocation', 'coverage', 'type']);
-  if (!supportedProfiles.has(program.tool)) {
-    console.log('Error: please specify supported tool type using -t option');
-    program.outputHelp();
-    process.exit(-1);
-  }
-  checkOutputFolder(program);
+  if (!supportedProfiles.has(toolName))
+    outputHelp('Error: please specify supported tool type using -t option');
+  checkOutputFolder(outputFolder);
   await runTool({
-    nodeCommandLine: program.args,
-    toolName: program.tool,
-    outputFolder: program.output
+    nodeCommandLine,
+    toolName,
+    outputFolder
   });
 })()
