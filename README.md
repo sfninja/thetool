@@ -1,6 +1,7 @@
 # thetool
 
 <!-- [START badges] -->
+[![Build Status](https://img.shields.io/travis/com/ak239/thetool/master.svg)](https://travis-ci.com/ak239/thetool)
 [![NPM thetool package](https://img.shields.io/npm/v/thetool.svg)](https://npmjs.org/package/thetool)
 <!-- [END badges] -->
 
