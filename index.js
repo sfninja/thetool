@@ -78,4 +78,4 @@ function outputVersion() {
     ondemand,
     outputFolder
   });
-})()
+})();
