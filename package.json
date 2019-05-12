@@ -10,7 +10,7 @@
     "thetool": "./index.js"
   },
   "scripts": {
-    "test": "npm run lint",
+    "test": "npm run lint && jest ./test",
     "lint": "eslint ."
   },
   "repository": {
@@ -34,6 +34,7 @@
     "ws": "^7.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "jest": "^24.8.0"
   }
 }
