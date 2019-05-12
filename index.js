@@ -30,6 +30,7 @@ function outputHelp(error) {
   console.log('Options:');
   console.log('  -t, --tool [type]               tool type: cpu, memoryallocation, memorysampling, coverage or type');
   console.log('  -o, --output [existing folder]  folder for captured data');
+  console.log('  --ondemand                      add startTheTool and stopTheTool to Node context for on-demand profiling');
   console.log('  -V, --version                   output the version number');
   console.log('  -h, --help                      output usage information');
   process.exit(error ? -1 : 0);
@@ -44,6 +45,7 @@ function outputVersion() {
   let toolName = '';
   let outputFolder = '';
   let nodeCommandLine = [];
+  let ondemand = false;
   const argv = process.argv;
   for (let i = 2; i < argv.length; ++i) {
     const arg = argv[i];
@@ -57,6 +59,8 @@ function outputVersion() {
     } else if (arg === '-o' || arg === '--output') {
       outputFolder = argv[i + 1] || '';
       ++i;
+    } else if (arg === '--ondemand') {
+      ondemand = true;
     } else {
       nodeCommandLine = argv.slice(i);
       break;
@@ -71,6 +75,7 @@ function outputVersion() {
   await runTool({
     nodeCommandLine,
     toolName,
+    ondemand,
     outputFolder
   });
 })()

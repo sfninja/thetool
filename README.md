@@ -37,6 +37,29 @@ thetool interface is simple as 1-2-3.
 
 During its work thetool will dump two kind of messages: `thetool> node process detected` and `thetool> node process finished, tool output:`. Second type of message contains some information about how to use captured data as well.
 
+## On-demand tooling
+
+You can use `--ondemand` flag to profile only part of your app:
+1. Add `--ondemand` flag to the list of thetool arguments.
+2. Call `startTheTool/stopTheTool` from your Node scripts (thetool will add these methods to Node context).
+
+`startTheTool/stopTheTool` methods are asynchronous, so you should await them or chain them using `promise.then`
+
+Couple examples:
+```js
+async function main() {
+  await startTheTool();
+  // code of your app
+  await stopTheTool();
+}
+// .. or using promises..
+function main() {
+  startTheTool().then(() => {
+    // code of your app
+  }).then(() => stopTheTool());
+}
+```
+
 ## Tools
 
 ### CPU Profiler
