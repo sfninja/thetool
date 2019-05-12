@@ -36,7 +36,7 @@ thetool interface is simple as 1-2-3.
 2. Specify tool name using `-t`, currently supported tools: CPU profiler (cpu), Sampling Memory Profiler (memorysampling), Allocation Memory Profiler (memoryallocation), Coverage Profiler (coverage), Type Profiler (type), you can find a little bit more details below about each of them.
 3. Put any command that runs node process after arguments, e.g. `node index.js` or `npx thetool` or `npm run test`, .. thetool supports child processes.
 
-During its work thetool will dump two kind of messages: `thetool> node process detected` and `thetool> node process finished, tool output:`. Second type of message contains some information about how to use captured data as well.
+When report is ready, thetool will dump `thetool> Report captured in ...` message in terminal with a hint how to analyze it.
 
 ## On-demand tooling
 
