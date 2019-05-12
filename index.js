@@ -8,23 +8,22 @@
 const fs = require('fs');
 
 const runTool = require('./lib/Runner');
-const package = require('./package.json');
-
-require('update-notifier')({pkg: package}).notify({isGlobal: true});
+const pkg = require('./package.json');
 
 function checkOutputFolder(outputFolder) {
   if (!outputFolder)
-    outputHelp('Error: please specify output folder');
+    return outputHelp('Error: please specify output folder');
   if (!fs.existsSync(outputFolder))
-    outputHelp('Error: output folder does not exist');
+    return outputHelp('Error: output folder does not exist');
   const stats = fs.statSync(outputFolder);
   if (!stats.isDirectory())
-    outputHelp('Error: passed output folder is not a folder');
+    return outputHelp('Error: passed output folder is not a folder');
+  return 0;
 }
 
 function outputHelp(error) {
   if (error)
-    console.log(error);
+    console.error(error);
   console.log('Usage: thetool [options] <command to start node process, e.g. node index.js or npm run test>');
   console.log('');
   console.log('Options:');
@@ -33,26 +32,25 @@ function outputHelp(error) {
   console.log('  --ondemand                      add startTheTool and stopTheTool to Node context for on-demand profiling');
   console.log('  -V, --version                   output the version number');
   console.log('  -h, --help                      output usage information');
-  process.exit(error ? -1 : 0);
+  return error ? -1 : 0;
 }
 
 function outputVersion() {
-  console.log(package.version);
-  process.exit(0);
+  console.log(pkg.version);
+  return 0;
 }
 
-(async function main() {
+async function main(argv) {
   let toolName = '';
   let outputFolder = '';
   let nodeCommandLine = [];
   let ondemand = false;
-  const argv = process.argv;
-  for (let i = 2; i < argv.length; ++i) {
+  for (let i = 0; i < argv.length; ++i) {
     const arg = argv[i];
     if (arg === '-V' || arg === '--version')
-      outputVersion();
+      return outputVersion();
     if (arg === '--help')
-      outputHelp();
+      return outputHelp();
     if (arg === '-t' || arg === '--tool') {
       toolName = argv[i + 1] || '';
       ++i;
@@ -67,15 +65,25 @@ function outputVersion() {
     }
   }
   if (nodeCommandLine.length < 1)
-    outputHelp('Error: please specify how to start node process');
+    return outputHelp('Error: please specify how to start node process');
   const supportedProfiles = new Set(['cpu', 'memorysampling', 'memoryallocation', 'coverage', 'type']);
   if (!supportedProfiles.has(toolName))
-    outputHelp('Error: please specify supported tool type using -t option');
-  checkOutputFolder(outputFolder);
+    return outputHelp('Error: please specify supported tool type using -t option');
+  const code = checkOutputFolder(outputFolder);
+  if (code !== 0)
+    return code;
   await runTool({
     nodeCommandLine,
     toolName,
     ondemand,
     outputFolder
   });
-})();
+  return 0;
+}
+
+if (require.main === module) {
+  require('update-notifier')({pkg}).notify({isGlobal: true});
+  main(process.argv.slice(2)).then(process.exit);
+} else {
+  module.exports = main;
+}
