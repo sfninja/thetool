@@ -10,3 +10,4 @@
 
 # other
 .travis.yml
+.eslintrc.js
