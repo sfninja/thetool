@@ -9,6 +9,8 @@ const fs = require('fs');
 
 const runTool = require('./lib/Runner');
 const { ReportWriter } = require('./lib/ReportWriter');
+const createTool = require('./lib/Tool');
+
 const pkg = require('./package.json');
 
 function checkOutputFolder(outputFolder) {
@@ -76,7 +78,7 @@ async function main(argv) {
   const writer = new ReportWriter(outputFolder);
   await runTool({
     nodeCommandLine,
-    toolName,
+    toolFactory: createTool.bind(null, toolName),
     ondemand,
     callback: writer.reportEventCallback.bind(writer)
   });

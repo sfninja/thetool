@@ -5,6 +5,7 @@
  */
 
 const runTool = require('../lib/Runner');
+const createTool = require('../lib/Tool');
 
 class ReportWriter {
   constructor() {
@@ -33,7 +34,7 @@ test('basic', async() => {
   const writer = new ReportWriter();
   await runTool({
     nodeCommandLine: ['node', '-e', ''],
-    toolName: 'cpu',
+    toolFactory: createTool.bind(null, 'cpu'),
     ondemand: false,
     callback: writer.reportEventCallback.bind(writer)
   });
@@ -67,7 +68,7 @@ test('ondemand', async() => {
   const writer = new ReportWriter();
   await runTool({
     nodeCommandLine: ['node', '-e', `(${main.toString()})()`],
-    toolName: 'cpu',
+    toolFactory: createTool.bind(null, 'cpu'),
     ondemand: true,
     callback: writer.reportEventCallback.bind(writer)
   });
