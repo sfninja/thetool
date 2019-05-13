@@ -80,7 +80,7 @@ async function main(argv) {
   }
   if (nodeCommandLine.length < 1)
     return outputHelp('Error: please specify how to start node process');
-  const supportedProfiles = new Set(['cpu', 'memorysampling', 'memoryallocation', 'coverage', 'type']);
+  const supportedProfiles = new Set(['cpu', 'memorysampling', 'memoryallocation', 'coverage', 'type', 'tracing']);
   if (!supportedProfiles.has(toolName))
     return outputHelp('Error: please specify supported tool type using -t option');
   const code = checkOutputFolder(outputFolder);

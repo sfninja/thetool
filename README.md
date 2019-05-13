@@ -89,6 +89,21 @@ thetool -o . -t memoryallocation npm run test
 
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data.
 
+### Tracing
+```bash
+thetool -o . -t tracing --recordMode recordAsMuchAsPossible --includedCategories node,v8 npm run test
+```
+
+To analyze: open Chrome DevTools, go to Performance tab, click load button, select file with data.
+
+`--recordMode` controls how the trace buffer stores data (recordUntilFull, recordContinuously, recordAsMuchAsPossible)
+`--includedCategories` please take a look on different available categories on https://nodejs.org/api/tracing.html
+
+E.g. you can capture V8 sampling profiler using following command:
+```bash
+thetool -o . -t tracing --recordMode recordAsMuchAsPossible --includedCategories v8.execute,v8.cpu_profiler,v8.cpu_profiler.hires npm run test
+```
+
 ### Coverage Profiler
 
 ```bash
