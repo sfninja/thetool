@@ -79,6 +79,8 @@ thetool -o . -t memorysampling npm run test
 
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data.
 
+`--samplingInterval` option is available: average sample interval in bytes, poisson distribution is used for the intervals. The default value is 32768 bytes
+
 ### Allocation Memory Profiler
 
 ```bash
