@@ -27,7 +27,7 @@ function checkOutputFolder(outputFolder) {
 function outputHelp(error) {
   if (error)
     console.error(error);
-  console.log('Usage: thetool [options] <command to start node process, e.g. node index.js or npm run test>');
+  console.log('Usage: thetool [options] [tool specific options] <command to start node process, e.g. node index.js or npm run test>');
   console.log('');
   console.log('Options:');
   console.log('  -t, --tool [type]               tool type: cpu, memoryallocation, memorysampling, coverage or type');
@@ -35,6 +35,7 @@ function outputHelp(error) {
   console.log('  --ondemand                      add startTheTool and stopTheTool to Node context for on-demand profiling');
   console.log('  -V, --version                   output the version number');
   console.log('  -h, --help                      output usage information');
+  console.log('For list of tool specific options please check https://github.com/ak239/thetool/blob/master/README.md');
   return error ? -1 : 0;
 }
 
@@ -48,6 +49,7 @@ async function main(argv) {
   let outputFolder = '';
   let nodeCommandLine = [];
   let ondemand = false;
+  const toolOptions = new Map();
   for (let i = 0; i < argv.length; ++i) {
     const arg = argv[i];
     if (arg === '-V' || arg === '--version')
@@ -62,6 +64,15 @@ async function main(argv) {
       ++i;
     } else if (arg === '--ondemand') {
       ondemand = true;
+    } else if (arg === '--') {
+      continue;
+    } else if (arg.startsWith('--')) {
+      if ((argv[i + 1] || '').startsWith('--')) {
+        toolOptions.set(argv[i].replace(/^--/, ''), true);
+      } else {
+        toolOptions.set(argv[i].replace(/^--/, ''), argv[i + 1]);
+        ++i;
+      }
     } else {
       nodeCommandLine = argv.slice(i);
       break;
@@ -78,7 +89,7 @@ async function main(argv) {
   const writer = new ReportWriter(outputFolder);
   await runTool({
     nodeCommandLine,
-    toolFactory: createTool.bind(null, toolName),
+    toolFactory: createTool.bind(null, toolName, toolOptions),
     ondemand,
     callback: writer.reportEventCallback.bind(writer)
   });
