@@ -1,6 +1,6 @@
 {
   "name": "thetool",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "thetool is a CLI tool to capture different cpu, memory and other profiles for your node app in Chrome DevTools friendly format",
   "main": "index.js",
   "engines": {
