@@ -5,5 +5,9 @@
 *.pyc
 .vscode
 
+# tests
+/test/
+
 # other
 README.md
+.travis.yml

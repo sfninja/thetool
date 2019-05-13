@@ -30,8 +30,7 @@
   },
   "homepage": "https://github.com/ak239/thetool#readme",
   "dependencies": {
-    "update-notifier": "^3.0.0",
-    "ws": "^7.0.0"
+    "update-notifier": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
