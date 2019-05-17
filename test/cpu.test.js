@@ -82,3 +82,52 @@ test('ondemand', async() => {
   }
 });
 
+test('ondemand in worker', async() => {
+  async function main() {
+    const {
+      Worker, isMainThread, parentPort
+    } = require('worker_threads');
+    if (isMainThread) {
+      const worker = new Worker(`(${main.toString()})()`, { eval: true });
+      worker.postMessage('ping');
+      worker.postMessage('ping');
+      worker.postMessage('ping');
+    } else {
+      parentPort.once('message', async message => {
+        await startTheTool();
+        sleepA(50);
+        await stopTheTool();
+        sleepB(50);
+      });
+    }
+
+    function sleepA(ms) {
+      const st = Date.now();
+      while (Date.now() < st + ms);
+    }
+
+    function sleepB(ms) {
+      const st = Date.now();
+      while (Date.now() < st + ms);
+    }
+  }
+
+  const writer = new ReportWriter();
+  await runTool({
+    nodeCommandLine: [process.execPath,
+      '--experimental-worker',
+      '-e',
+      `(${main.toString()})()`],
+    toolFactory: createTool.bind(null, 'cpu', new Map()),
+    ondemand: true,
+    callback: writer.reportEventCallback.bind(writer)
+  });
+  const reports = writer.reports();
+  expect(reports.length).toBe(1);
+  for (const report of reports) {
+    expect(report.finished).toBe(true);
+    const data = JSON.parse(report.data);
+    expect(data.nodes.some(node => node.callFrame.functionName === 'sleepA')).toBe(true);
+    expect(data.nodes.some(node => node.callFrame.functionName === 'sleepB')).toBe(false);
+  }
+});

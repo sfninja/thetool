@@ -83,3 +83,53 @@ test('ondemand', async() => {
     expect(frames.some(frame => frame.callFrame.functionName === 'sleepB')).toBe(false);
   }
 });
+
+test('ondemand in worker', async() => {
+  async function main() {
+    const {
+      Worker, isMainThread, parentPort
+    } = require('worker_threads');
+    if (isMainThread) {
+      const worker = new Worker(`(${main.toString()})()`, { eval: true });
+      worker.postMessage('ping');
+    } else {
+      parentPort.once('message', async message => {
+        await startTheTool();
+        sleepA(50);
+        await stopTheTool();
+        sleepB(50);
+      });
+    }
+
+    function sleepA(ms) {
+      const st = Date.now();
+      while (Date.now() < st + ms);
+    }
+
+    function sleepB(ms) {
+      const st = Date.now();
+      while (Date.now() < st + ms);
+    }
+  }
+
+  const writer = new ReportWriter();
+  await runTool({
+    nodeCommandLine: [process.execPath,
+      '--experimental-worker',
+      '-e',
+      `(${main.toString()})()`],
+    toolFactory: createTool.bind(null, 'tracing', new Map([['includedCategories', 'v8.cpu_profiler,v8.cpu_profiler.hires']])),
+    ondemand: true,
+    callback: writer.reportEventCallback.bind(writer)
+  });
+  const reports = writer.reports();
+  expect(reports.length).toBe(1);
+  for (const report of reports) {
+    expect(report.finished).toBe(true);
+    const data = JSON.parse(report.data);
+    const chunks = data.filter(value => value.name === 'ProfileChunk').map(({ args: { data: { cpuProfile: {nodes}}}}) => nodes);
+    const frames = [].concat(...chunks).filter(frame => frame && frame.callFrame);
+    expect(frames.some(frame => frame.callFrame.functionName === 'sleepA')).toBe(true);
+    expect(frames.some(frame => frame.callFrame.functionName === 'sleepB')).toBe(false);
+  }
+});
