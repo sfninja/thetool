@@ -89,6 +89,15 @@ thetool -o . -t memoryallocation npm run test
 
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data.
 
+### Heap Snapshot tool
+
+```bash
+thetool -o . -t heapsnapshot node -e "captureTheTool.then(captureTheTool).then(captureTheTool)"
+```
+
+Given command will capture three heap snapshots.
+To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data. You can load multiple snapshots and compare them from DevTools UI.
+
 ### Tracing
 ```bash
 thetool -o . -t tracing --recordMode recordAsMuchAsPossible --includedCategories node,v8 npm run test
