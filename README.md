@@ -9,8 +9,10 @@
 
 ## Quick start
 ```bash
-npx thetool -o . -t cpu npm run test
+npx thetool -o . -t memorysampling npm run test
+# .. open DevTools frontend and do three clicks to get:
 ```
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388239-f9d25580-8024-11e9-8d35-a7ce4f6a4137.png">
 
 ## Getting Started
 
@@ -65,6 +67,8 @@ thetool -o . -t cpu npm run test
 
 To analyze: open Chrome DevTools, to to Performance tab, click load button, select file with data.
 
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388318-f55a6c80-8025-11e9-9826-6432b588ed84.png">
+
 ## Memory: Sampling Profiler
 
 ```bash
@@ -75,6 +79,8 @@ To analyze: open Chrome DevTools, go to Memory tab, click load button, select fi
 
 `--samplingInterval` option is available: average sample interval in bytes, poisson distribution is used for the intervals. The default value is 32768 bytes
 
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388239-f9d25580-8024-11e9-8d35-a7ce4f6a4137.png">
+
 ## Memory: Allocation Profiler
 
 ```bash
@@ -82,6 +88,8 @@ thetool -o . -t memoryallocation npm run test
 ```
 
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data.
+
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388341-4cf8d800-8026-11e9-9ac5-429a33523ea0.png">
 
 ## Memory: Heap Snapshot
 
@@ -91,6 +99,8 @@ thetool -o . -t heapsnapshot node -e "captureTheTool.then(captureTheTool).then(c
 
 Given command will capture three heap snapshots.
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data. You can load multiple snapshots and compare them from DevTools UI.
+
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388382-c264a880-8026-11e9-92c9-b455d05b89c4.png">
 
 ## Tracing
 
@@ -108,6 +118,8 @@ E.g. you can capture V8 sampling profiler using following command:
 thetool -o . -t tracing --recordMode recordAsMuchAsPossible --includedCategories v8.execute,v8.cpu_profiler,v8.cpu_profiler.hires npm run test
 ```
 
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388415-1ec7c800-8027-11e9-9299-165a24dd6cdb.png">
+
 ## Coverage Profiler
 
 ```bash
@@ -116,10 +128,12 @@ thetool -o . -t coverage npm run test
 
 To analyze: in current folder create ./coverage/tmp folder and move files with data to this folder, run [c8](https://www.npmjs.com/package/c8): `npx c8 report`. Please take a look at c8 README.md to see what output formats are supported.
 
+<img width="1059" alt="Screen Shot 2019-05-27 at 2 10 14 AM" src="https://user-images.githubusercontent.com/426418/58388465-e2e13280-8027-11e9-9a75-e2d278d984c7.png">
+
 ## Type Profiler
 
 ```bash
 thetool -o . -t type npm run test
 ```
 
-To analyze: please build something and I will put it here.
+To analyze: no tool yet.
