@@ -18,10 +18,21 @@ npx thetool -o . -t cpu npm run test
 
 thetool interface is simple as 1-2-3.
 1. Specify **output folder using `-o`** flag, e.g. `-o .` to put output in current folder.
-2. Specify **tool using `-t`**, available tools: cpu, memorysampling, memoryallocation, coverage, type, heapsnapshot.
+2. Specify **tool using `-t`**, available tools: [cpu](https://github.com/ak239/thetool#cpu-profiler), [memorysampling](https://github.com/ak239/thetool#sampling-memory-profiler), [memoryallocation](https://github.com/ak239/thetool#allocation-memory-profiler), [coverage](https://github.com/ak239/thetool#coverage-profiler), [type](https://github.com/ak239/thetool#type-profiler), [heapsnapshot](https://github.com/ak239/thetool#heap-snapshot-tool).
 3. Specify **any command to start node**, e.g. `node index.js` or `npx thetool` or `npm run test`.
 
 When report is ready, thetool will dump `thetool> Report captured in ...` message in terminal with a hint how to analyze it.
+
+## Tool selector
+
+| Problem | Tool | Insight | DevTools tab |
+|-|-|-|-|
+| my app is slow | [cpu](https://github.com/ak239/thetool#cpu-profiler) | where in code does app spend most time? | Performance |
+| my app requires too much memory | [memorysampling](https://github.com/ak239/thetool#sampling-memory-profiler) | where in code does app allocate most memory? | Memory |
+| my app requires too much memory | [memoryallocation](https://github.com/ak239/thetool#allocation-memory-profiler) | most precise version of memorysampling with much bigger overhead | Memory |
+| my app requires too much memory | [heapsnapshot](https://github.com/ak239/thetool#heap-snapshot-tool) | what is inside the heap right now? | Memory |
+| my app package is too big | [coverage](https://github.com/ak239/thetool#coverage-profiler) | what code was executed and how many times? | |
+| my app needs type annotations | [type](https://github.com/ak239/thetool#type-profiler) | what are the types of function arguments and returns? | |
 
 ## On-demand tooling
 
@@ -46,9 +57,7 @@ function main() {
 }
 ```
 
-## Tools
-
-### CPU Profiler
+## CPU: Profiler
 
 ```bash
 thetool -o . -t cpu npm run test
@@ -56,7 +65,7 @@ thetool -o . -t cpu npm run test
 
 To analyze: open Chrome DevTools, to to Performance tab, click load button, select file with data.
 
-### Sampling Memory Profiler
+## Memory: Sampling Profiler
 
 ```bash
 thetool -o . -t memorysampling npm run test
@@ -66,7 +75,7 @@ To analyze: open Chrome DevTools, go to Memory tab, click load button, select fi
 
 `--samplingInterval` option is available: average sample interval in bytes, poisson distribution is used for the intervals. The default value is 32768 bytes
 
-### Allocation Memory Profiler
+## Memory: Allocation Profiler
 
 ```bash
 thetool -o . -t memoryallocation npm run test
@@ -74,7 +83,7 @@ thetool -o . -t memoryallocation npm run test
 
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data.
 
-### Heap Snapshot tool
+## Memory: Heap Snapshot
 
 ```bash
 thetool -o . -t heapsnapshot node -e "captureTheTool.then(captureTheTool).then(captureTheTool)"
@@ -83,7 +92,8 @@ thetool -o . -t heapsnapshot node -e "captureTheTool.then(captureTheTool).then(c
 Given command will capture three heap snapshots.
 To analyze: open Chrome DevTools, go to Memory tab, click load button, select file with data. You can load multiple snapshots and compare them from DevTools UI.
 
-### Tracing
+## Tracing
+
 ```bash
 thetool -o . -t tracing --recordMode recordAsMuchAsPossible --includedCategories node,v8 npm run test
 ```
@@ -98,7 +108,7 @@ E.g. you can capture V8 sampling profiler using following command:
 thetool -o . -t tracing --recordMode recordAsMuchAsPossible --includedCategories v8.execute,v8.cpu_profiler,v8.cpu_profiler.hires npm run test
 ```
 
-### Coverage Profiler
+## Coverage Profiler
 
 ```bash
 thetool -o . -t coverage npm run test
@@ -106,7 +116,7 @@ thetool -o . -t coverage npm run test
 
 To analyze: in current folder create ./coverage/tmp folder and move files with data to this folder, run [c8](https://www.npmjs.com/package/c8): `npx c8 report`. Please take a look at c8 README.md to see what output formats are supported.
 
-### Type Profiler
+## Type Profiler
 
 ```bash
 thetool -o . -t type npm run test
