@@ -12,29 +12,14 @@
 npx thetool -o . -t cpu npm run test
 ```
 
-## Installation
-
-```bash
-# global install with npm:
-npm install -g thetool
-
-# alternatively, with yarn:
-yarn global add thetool
-```
-
 ## Getting Started
 
 > thetool works only with Node >= 10.x.
 
-Backed command example:
-```bash
-thetool -o . -t cpu npm run test
-```
-
 thetool interface is simple as 1-2-3.
-1. Specify output folder for captured data using `-o` flag, e.g. `-o .` to put output in current folder.
-2. Specify tool name using `-t`, currently supported tools: CPU profiler (cpu), Sampling Memory Profiler (memorysampling), Allocation Memory Profiler (memoryallocation), Coverage Profiler (coverage), Type Profiler (type), you can find a little bit more details below about each of them.
-3. Put any command that runs node process after arguments, e.g. `node index.js` or `npx thetool` or `npm run test`, .. thetool supports child processes.
+1. Specify **output folder using `-o`** flag, e.g. `-o .` to put output in current folder.
+2. Specify **tool using `-t`**, available tools: cpu, memorysampling, memoryallocation, coverage, type, heapsnapshot.
+3. Specify **any command to start node**, e.g. `node index.js` or `npx thetool` or `npm run test`.
 
 When report is ready, thetool will dump `thetool> Report captured in ...` message in terminal with a hint how to analyze it.
 
