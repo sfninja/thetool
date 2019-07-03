@@ -25,6 +25,11 @@ thetool interface is simple as 1-2-3.
 
 When report is ready, thetool will dump `thetool> Report captured in ...` message in terminal with a hint how to analyze it.
 
+## Why not to use Chrome DevTools directly?
+- it can be used in environments where it is not possible to run Chrome DevTools, e.g., on the server, run `thetool <yourapp>` there, send report back and analyze it locally,
+- it supports child processes and workers,
+- it supports some other tools, e.g., node tracing and type profiler.
+
 ## Tool selector
 
 | Problem | Tool | Insight | DevTools tab |
