@@ -30,10 +30,11 @@
   },
   "homepage": "https://github.com/ak239/thetool#readme",
   "dependencies": {
-    "update-notifier": "^3.0.0"
+    "update-notifier": "^3.0.1"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "lodash": "^4.17.14"
   }
 }
